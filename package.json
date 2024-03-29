@@ -1,0 +1,29 @@
+{
+  "name": "birthday-notification",
+  "version": "1.0.0",
+  "description": "App that will notify users of people's birthday they enter into the app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hcp30/birthday-notification.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hcp30/birthday-notification/issues"
+  },
+  "homepage": "https://github.com/hcp30/birthday-notification#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.3"
+  }
+}
