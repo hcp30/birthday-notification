@@ -10,10 +10,13 @@ class DateError extends Error {
 }
 
 const postUserBirthdayInfo = (req: Request, res: Response) => {
-    console.log("Hello " + req.params.firstname);
+
+    const {firstname, lastname, birthdate} = req.body;
+    
+    console.log("Hello " + firstname);
     let timestamp: number;
-    if (Date.parse(req.params.date)) {
-        timestamp = Date.parse(req.params.date);
+    if (Date.parse(birthdate)) {
+        timestamp = Date.parse(birthdate);
     } else {
         const dateError: DateError = new DateError("cannot parse Date. Incorrect Date format.");
         res.status(500).send({
@@ -23,15 +26,13 @@ const postUserBirthdayInfo = (req: Request, res: Response) => {
         throw new DateError("cannot parse Date");
     }
     const date: Date = new Date(timestamp);
-    const firstname: string = req.params.firstname;
-    const lastname: string = req.params.lastname;
     if (firstname && lastname) {
         insertUserBirthdayInfo(firstname,lastname,date);
     }
 
     res.status(200).send({
-        firstname: req.params.firstname,
-        lastname: req.params.lastname,
+        firstname: firstname,
+        lastname: lastname,
         birthday: date
     });
 }
