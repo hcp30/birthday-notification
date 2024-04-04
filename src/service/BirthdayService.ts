@@ -1,4 +1,5 @@
-import UserBirthday from "../models/UserBirthday";
+import UserBirthday from '../models/UserBirthday';
+import UserBirthdayData from '../interface/UserBirthdayData';
 
 class FormatError extends Error {
     
@@ -28,4 +29,16 @@ const insertUserBirthdayInfo =  async (firstname: string, lastname: string, date
 
 };
 
-export default insertUserBirthdayInfo;
+const findUserById = (id: string) => {
+    const userBirthday = UserBirthday.findOne({
+        userId: id
+    }).then((result) => {
+        console.log("result: " + result)
+        return result;
+    }).catch((err) => {
+        console.log("findUserByIdError: " + err);
+    });
+    return userBirthday;
+}
+
+export {insertUserBirthdayInfo, findUserById};

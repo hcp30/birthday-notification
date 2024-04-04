@@ -1,8 +1,10 @@
 import express from 'express';
-import { postUserBirthdayInfo } from '../controller/BirthdayController';
+import { postUserBirthdayInfo,fetchUserById } from '../controller/BirthdayController';
 
 const router = express();
 
-router.get('/', postUserBirthdayInfo);
+router.post('/', postUserBirthdayInfo);
+
+router.get('/:userId', fetchUserById);
 
 export {router as BirthdayRoutes};

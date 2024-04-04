@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import insertUserBirthdayInfo from "../service/BirthdayService";
+import {insertUserBirthdayInfo, findUserById} from "../service/BirthdayService";
+import UserBirthdayData from '../interface/UserBirthdayData';
 
 
 class DateError extends Error {
@@ -14,11 +15,12 @@ const parseBirthDate = (birthdate: string) => {
     if (Date.parse(birthdate)) {
         timestamp = Date.parse(birthdate);
     } else {
-        const dateError: DateError = new DateError("cannot parse Date. Incorrect Date format.");
-        throw new DateError("cannot parse Date");
+        throw new DateError("cannot parse Date. Incorrect Date format.");
     }
     return timestamp;
 }
+
+// endpoint: /birthday/
 
 const postUserBirthdayInfo = async (req: Request, res: Response) => {
 
@@ -48,4 +50,22 @@ const postUserBirthdayInfo = async (req: Request, res: Response) => {
     
 }
 
-export {postUserBirthdayInfo};
+// /birthday/:userId
+const fetchUserById = async (req: Request, res: Response) => {
+    let userBirthday: UserBirthdayData;
+    if (req.params && req.params.userId) {
+       const result = await findUserById(req.params.userId);
+        userBirthday = {
+            firstname: result?.firstname
+        }
+       console.log("userBirthday: " + userBirthday)
+       res.status(200).send({
+            userMsg: userBirthday
+       });
+    }
+}
+
+export { 
+    postUserBirthdayInfo, 
+    fetchUserById 
+};
