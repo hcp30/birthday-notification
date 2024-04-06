@@ -56,7 +56,9 @@ const fetchUserById = async (req: Request, res: Response) => {
     if (req.params && req.params.userId) {
        const result = await findUserById(req.params.userId);
         userBirthday = {
-            firstname: result?.firstname
+            firstname: result?.firstname,
+            lastname: result?.lastname,
+            birthdate: result?.birthdate
         }
        console.log("userBirthday: " + userBirthday)
        res.status(200).send({
