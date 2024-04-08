@@ -1,5 +1,4 @@
 import UserBirthday from '../models/UserBirthday';
-import UserBirthdayData from '../interface/UserBirthdayData';
 
 class FormatError extends Error {
     
@@ -18,7 +17,7 @@ const insertUserBirthdayInfo =  async (firstname: string, lastname: string, date
             lastname: lastname,
             birthdate: dateOfBirth
         });
-        userBirthdayInfo.userId = userBirthdayInfo._id.toString();
+        userBirthdayInfo.birthdayId = userBirthdayInfo._id.toString();
         await userBirthdayInfo.save();
 
     } else {
@@ -29,9 +28,9 @@ const insertUserBirthdayInfo =  async (firstname: string, lastname: string, date
 
 };
 
-const findUserById = (id: string) => {
+const findUserByBirthdayId = (id: string): Promise<any> => {
     const userBirthday = UserBirthday.findOne({
-        userId: id
+        birthdayId: id
     }).then((result) => {
         console.log("result: " + result)
         return result;
@@ -41,4 +40,4 @@ const findUserById = (id: string) => {
     return userBirthday;
 }
 
-export {insertUserBirthdayInfo, findUserById};
+export {insertUserBirthdayInfo, findUserByBirthdayId};

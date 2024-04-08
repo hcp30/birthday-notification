@@ -5,6 +5,6 @@ const router = express();
 
 router.post('/', postUserBirthdayInfo);
 
-router.get('/:userId', fetchUserById);
+router.get('/:birthdayId', fetchUserById);
 
 export {router as BirthdayRoutes};

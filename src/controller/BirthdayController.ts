@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import {insertUserBirthdayInfo, findUserById} from "../service/BirthdayService";
+import {insertUserBirthdayInfo, findUserByBirthdayId} from "../service/BirthdayService";
 import UserBirthdayData from '../interface/UserBirthdayData';
 
 
@@ -10,7 +10,7 @@ class DateError extends Error {
     }
 }
 
-const parseBirthDate = (birthdate: string) => {
+const parseBirthDate = (birthdate: string): number => {
     let timestamp: number;
     if (Date.parse(birthdate)) {
         timestamp = Date.parse(birthdate);
@@ -22,7 +22,7 @@ const parseBirthDate = (birthdate: string) => {
 
 // endpoint: /birthday/
 
-const postUserBirthdayInfo = async (req: Request, res: Response) => {
+const postUserBirthdayInfo = async (req: Request, res: Response): Promise<any> => {
 
     const {firstname, lastname, birthdate} = req.body;
     
@@ -50,11 +50,11 @@ const postUserBirthdayInfo = async (req: Request, res: Response) => {
     
 }
 
-// /birthday/:userId
-const fetchUserById = async (req: Request, res: Response) => {
+// /birthday/:birthdayId
+const fetchUserById = async (req: Request, res: Response): Promise<any> => {
     let userBirthday: UserBirthdayData;
     if (req.params && req.params.userId) {
-       const result = await findUserById(req.params.userId);
+       const result = await findUserByBirthdayId(req.params.birthdayId);
         userBirthday = {
             firstname: result?.firstname,
             lastname: result?.lastname,

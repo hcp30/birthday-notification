@@ -2,10 +2,11 @@ import { Schema, model } from "mongoose";
 
 
 const userBirthdaySchema = new Schema({
-    userId: String,
+    birthdayId: String,
     firstname: String,
     lastname: String,
-    birthdate: Date
+    birthdate: Date,
+    userId: String
 });
 
 const UserBirthday = model('UserBirthday',userBirthdaySchema);
