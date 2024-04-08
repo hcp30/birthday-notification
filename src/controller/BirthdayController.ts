@@ -53,7 +53,7 @@ const postUserBirthdayInfo = async (req: Request, res: Response): Promise<any> =
 // /birthday/:birthdayId
 const fetchUserById = async (req: Request, res: Response): Promise<any> => {
     let userBirthday: UserBirthdayData;
-    if (req.params && req.params.userId) {
+    if (req.params && req.params.birthdayId) {
        const result = await findUserByBirthdayId(req.params.birthdayId);
         userBirthday = {
             firstname: result?.firstname,
@@ -64,6 +64,10 @@ const fetchUserById = async (req: Request, res: Response): Promise<any> => {
        res.status(200).send({
             userMsg: userBirthday
        });
+    } else {
+        res.status(404).json({
+            errormsg: "birthdayId cannot be empty"
+        });
     }
 }
 
