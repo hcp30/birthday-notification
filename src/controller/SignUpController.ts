@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { createEmailPassword, findByEmail } from "../service/SignUpService";
 import Account from "../models/Account";
 import AccountData from "../interface/AccountData";
+import bcrypt from 'bcrypt';
 
 const validateEmailPassword = (email: string, password: string): boolean => {
     if (!email || !password) {
@@ -15,10 +16,13 @@ const validateEmailPassword = (email: string, password: string): boolean => {
 }
 
 const signup = async (req: Request, res: Response): Promise<Response> => {
-    if (validateEmailPassword(req.body.email, req.body.password)) {
-        const foundAccount = await fetchByEmail(req.body.email);
-        if (!foundAccount) {
-            createEmailPassword(req.body.email,req.body.password);
+    const email = req.body.email;
+    const password = req.body.password;
+    if (validateEmailPassword(email, password)) {
+        const foundAccount = await fetchByEmail(email);
+        if (!foundAccount.email) {
+            const hashedPassword = await bcrypt.hash(password,10);
+            createEmailPassword(email,hashedPassword);
             res.status(200).send({
                 msg: "Email and Passowrd created!"
             });
@@ -43,7 +47,8 @@ const login = async (req: Request, res: Response): Promise<Response> => {
     const password = req.body.password;
 
     if (validateEmailPassword(email, password)) {
-        if (foundAccount && password === foundAccount.password) {
+        const passwordMatch = await bcrypt.compare(password,foundAccount.password);
+        if (foundAccount.email && passwordMatch) {
             res.status(200).send({
                 msg: "Login Successful!"
             });
