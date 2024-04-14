@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
-import { createEmailPassword, findEmail } from "../service/SignUpService";
+import { createEmailPassword, findByEmail } from "../service/SignUpService";
+import Account from "../models/Account";
+import AccountData from "../interface/AccountData";
 
 const validateEmailPassword = (email: string, password: string): boolean => {
     if (!email || !password) {
@@ -14,8 +16,8 @@ const validateEmailPassword = (email: string, password: string): boolean => {
 
 const signup = async (req: Request, res: Response): Promise<Response> => {
     if (validateEmailPassword(req.body.email, req.body.password)) {
-        const foundEmail: string = await fetchEmail(req.body.email);
-        if (!foundEmail) {
+        const foundAccount = await fetchByEmail(req.body.email);
+        if (!foundAccount) {
             createEmailPassword(req.body.email,req.body.password);
             res.status(200).send({
                 msg: "Email and Passowrd created!"
@@ -34,9 +36,34 @@ const signup = async (req: Request, res: Response): Promise<Response> => {
     return res;
 }
 
-const fetchEmail = async (email: string): Promise<string> => {
-    const foundEmail: string = await findEmail(email);
+const login = async (req: Request, res: Response): Promise<Response> => {
+
+    const foundAccount = await fetchByEmail(req.body.email);
+    const email = req.body.email;
+    const password = req.body.password;
+
+    if (validateEmailPassword(email, password)) {
+        if (foundAccount && password === foundAccount.password) {
+            res.status(200).send({
+                msg: "Login Successful!"
+            });
+        } else {
+            res.status(401).send({
+                msg: "incorrect email/password"
+            });
+        }
+    } else {
+        res.status(400).send({
+            msg: "incorrect format"
+        })
+    }
+    return res;
+}
+
+const fetchByEmail = async (email: string): Promise<AccountData> => {
+    const foundEmail: AccountData = await findByEmail(email);
+    console.log(typeof Account);
     return foundEmail;
 }
 
-export { signup };
+export { signup, login };
