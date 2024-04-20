@@ -1,4 +1,3 @@
-import { Query } from "mongoose";
 import Account from "../models/Account";
 
 const createEmailPassword = async (email: string, password: string) => {
@@ -18,7 +17,8 @@ const findByEmail = (email: string): Promise<any> => {
     }).then((result) => {
         return {
             email: result?.email,
-            password: result?.password
+            password: result?.password,
+            userId: result?.userId
         }
     });
 }

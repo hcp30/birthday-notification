@@ -51,7 +51,7 @@ const postUserBirthdayInfo = async (req: Request, res: Response): Promise<any> =
 }
 
 // /birthday/:birthdayId
-const fetchUserById = async (req: Request, res: Response): Promise<any> => {
+const fetchUserByBirthdayId = async (req: Request, res: Response): Promise<any> => {
     let userBirthday: UserBirthdayData;
     if (req.params && req.params.birthdayId) {
        const result = await findUserByBirthdayId(req.params.birthdayId);
@@ -73,5 +73,5 @@ const fetchUserById = async (req: Request, res: Response): Promise<any> => {
 
 export { 
     postUserBirthdayInfo, 
-    fetchUserById 
+    fetchUserByBirthdayId 
 };
