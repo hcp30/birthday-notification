@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import {insertUserBirthdayInfo, findUserByBirthdayId} from "../service/BirthdayService";
+import {insertUserBirthdayInfo, findUserBirthdayByBirthdayId,findUserBirthdaysByUserId} from "../service/BirthdayService";
 import UserBirthdayData from '../interface/UserBirthdayData';
 import UserAuthRequest from '../interface/UserAuthRequest';
 
@@ -53,10 +53,10 @@ const postUserBirthdayInfo = async (req: Request, res: Response): Promise<any> =
 }
 
 // /birthday/:birthdayId
-const fetchUserByBirthdayId = async (req: Request, res: Response): Promise<any> => {
+const fetchUserBirthdayByBirthdayId = async (req: Request, res: Response): Promise<any> => {
     let userBirthday: UserBirthdayData;
     if (req.params && req.params.birthdayId) {
-       const result = await findUserByBirthdayId(req.params.birthdayId);
+       const result = await findUserBirthdayByBirthdayId(req.params.birthdayId);
         userBirthday = {
             firstname: result?.firstname,
             lastname: result?.lastname,
@@ -73,7 +73,24 @@ const fetchUserByBirthdayId = async (req: Request, res: Response): Promise<any> 
     }
 }
 
+const fetchUserBirthdaysByUserId = async (req: Request, res: Response) => {
+    const { userId } = <UserAuthRequest> req;
+    const result = await findUserBirthdaysByUserId(userId);
+    const userBirthdays = result instanceof Array && result.map(document => {
+        return {
+            firstname: document?.firstname,
+            lastname: document?.lastname,
+            birthdate: document?.birthdate
+        };
+    });
+    
+    res.status(200).send({
+        birthdays: userBirthdays
+    });
+}
+
 export { 
     postUserBirthdayInfo, 
-    fetchUserByBirthdayId 
+    fetchUserBirthdayByBirthdayId,
+    fetchUserBirthdaysByUserId
 };

@@ -1,10 +1,16 @@
 import express from 'express';
-import { postUserBirthdayInfo,fetchUserByBirthdayId } from '../controller/BirthdayController';
+import { 
+    postUserBirthdayInfo,
+    fetchUserBirthdayByBirthdayId, 
+    fetchUserBirthdaysByUserId 
+} from '../controller/BirthdayController';
 
 const router = express();
 
 router.post('/', postUserBirthdayInfo);
 
-router.get('/:birthdayId', fetchUserByBirthdayId);
+router.get('/user-birthday/:birthdayId', fetchUserBirthdayByBirthdayId);
+
+router.get('/user-birthdays', fetchUserBirthdaysByUserId);
 
 export {router as BirthdayRoutes};

@@ -29,9 +29,9 @@ const insertUserBirthdayInfo =  async (firstname: string, lastname: string, date
 
 };
 
-const findUserByBirthdayId = (id: string): Promise<any> => {
+const findUserBirthdayByBirthdayId = (birthdayId: string): Promise<any> => {
     const userBirthday = UserBirthday.findOne({
-        birthdayId: id
+        birthdayId: birthdayId
     }).then((result) => {
         console.log("result: " + result)
         return result;
@@ -41,4 +41,16 @@ const findUserByBirthdayId = (id: string): Promise<any> => {
     return userBirthday;
 }
 
-export {insertUserBirthdayInfo, findUserByBirthdayId};
+const findUserBirthdaysByUserId = (userId: string) => {
+    const userBirthday = UserBirthday.find({
+        userId: userId
+    }).then((result) => {
+        console.log("result: " + result)
+        return result;
+    }).catch((err) => {
+        console.log("findUserByIdError: " + err);
+    });
+    return userBirthday;
+}
+
+export {insertUserBirthdayInfo, findUserBirthdayByBirthdayId, findUserBirthdaysByUserId};
