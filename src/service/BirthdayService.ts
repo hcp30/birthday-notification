@@ -8,14 +8,15 @@ class FormatError extends Error {
     }
 }
 
-const insertUserBirthdayInfo =  async (firstname: string, lastname: string, dateOfBirth: Date) => {
+const insertUserBirthdayInfo =  async (firstname: string, lastname: string, dateOfBirth: Date, userId: string) => {
     console.log(`received info about user. His firstname is ${firstname} and lastname is ${lastname} and his birhtday is ${dateOfBirth}`);
 
     if (firstname && dateOfBirth) {
         const userBirthdayInfo = await UserBirthday.create({
             firstname : firstname,
             lastname: lastname,
-            birthdate: dateOfBirth
+            birthdate: dateOfBirth,
+            userId: userId
         });
         userBirthdayInfo.birthdayId = userBirthdayInfo._id.toString();
         await userBirthdayInfo.save();

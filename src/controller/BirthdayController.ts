@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import {insertUserBirthdayInfo, findUserByBirthdayId} from "../service/BirthdayService";
 import UserBirthdayData from '../interface/UserBirthdayData';
+import UserAuthRequest from '../interface/UserAuthRequest';
 
 
 class DateError extends Error {
@@ -25,6 +26,7 @@ const parseBirthDate = (birthdate: string): number => {
 const postUserBirthdayInfo = async (req: Request, res: Response): Promise<any> => {
 
     const {firstname, lastname, birthdate} = req.body;
+    const { userId } = <UserAuthRequest> req;
     
     console.log("Hello " + firstname);
     let timestamp: number;
@@ -33,7 +35,7 @@ const postUserBirthdayInfo = async (req: Request, res: Response): Promise<any> =
 
         const date: Date = new Date(timestamp);
 
-        await insertUserBirthdayInfo(firstname,lastname,date);
+        await insertUserBirthdayInfo(firstname,lastname,date,userId);
         res.status(200).send({
             firstname: firstname,
             lastname: lastname,
