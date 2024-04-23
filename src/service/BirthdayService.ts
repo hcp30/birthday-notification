@@ -1,4 +1,3 @@
-import { Model } from 'mongoose';
 import UserBirthday from '../models/UserBirthday';
 
 class FormatError extends Error {
