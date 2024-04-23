@@ -1,3 +1,4 @@
+import { Model } from 'mongoose';
 import UserBirthday from '../models/UserBirthday';
 
 class FormatError extends Error {
@@ -53,4 +54,24 @@ const findUserBirthdaysByUserId = (userId: string) => {
     return userBirthday;
 }
 
-export {insertUserBirthdayInfo, findUserBirthdayByBirthdayId, findUserBirthdaysByUserId};
+const findUserBirthdayByDate = async (month: number, day: number): Promise<any> => {
+    const userBirthday = await UserBirthday.aggregate([
+        {
+            $project: {
+                month: {$month: "$birthdate"},
+                day: {$dayOfMonth: "$birthdate"},
+                firstname: 1,
+                lastname: 1
+            }
+        },
+        {
+            $match: {
+                month: month,
+                day: day
+            }
+        }
+    ]);
+    return userBirthday;
+}
+
+export {insertUserBirthdayInfo, findUserBirthdayByBirthdayId, findUserBirthdaysByUserId, findUserBirthdayByDate};

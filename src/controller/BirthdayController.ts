@@ -1,5 +1,10 @@
 import { Request, Response } from "express";
-import {insertUserBirthdayInfo, findUserBirthdayByBirthdayId,findUserBirthdaysByUserId} from "../service/BirthdayService";
+import {
+    insertUserBirthdayInfo, 
+    findUserBirthdayByBirthdayId,
+    findUserBirthdaysByUserId,
+    findUserBirthdayByDate
+} from "../service/BirthdayService";
 import UserBirthdayData from '../interface/UserBirthdayData';
 import UserAuthRequest from '../interface/UserAuthRequest';
 
@@ -89,8 +94,38 @@ const fetchUserBirthdaysByUserId = async (req: Request, res: Response) => {
     });
 }
 
+const fetchUserBirthdayByDate = async (req: Request, res: Response) => {
+
+    const { month, day } = req.params;
+
+    const month_n = Number(month);
+    const day_n = Number(day);
+
+    console.log(`month: ${month_n}`);
+    console.log(`day: ${day_n}`);
+
+    if (!isNaN(month_n) && !isNaN(day_n)) {
+
+        const userBirthdays = await findUserBirthdayByDate(month_n, day_n);
+        res.status(200).send({
+            userBirthdays: userBirthdays
+        });
+    } else {
+        res.status(401).send({
+            msg: 'incorrect format'
+        });
+    }
+
+    // const userBirthdays = await findUserBirthdayByDate(1,2);
+    // res.status(200).send({
+    //             userBirthdays: userBirthdays
+    //         });
+    
+}
+
 export { 
     postUserBirthdayInfo, 
     fetchUserBirthdayByBirthdayId,
-    fetchUserBirthdaysByUserId
+    fetchUserBirthdaysByUserId,
+    fetchUserBirthdayByDate
 };
