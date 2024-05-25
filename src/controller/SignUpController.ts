@@ -23,9 +23,9 @@ const signup = async (req: Request, res: Response): Promise<Response> => {
         const foundAccount = await fetchByEmail(email);
         if (!foundAccount.email) {
             const hashedPassword = await bcrypt.hash(password,10);
-            createEmailPassword(email,hashedPassword);
+            const token = await createEmailPassword(email,hashedPassword);
             res.status(200).send({
-                msg: "Email and Passowrd created!"
+                token: token
             });
         } else {
             res.status(500).send({

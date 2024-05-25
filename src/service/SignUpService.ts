@@ -8,6 +8,7 @@ const createEmailPassword = async (email: string, password: string) => {
 
     account.userId = account._id.toString();
     account.save();
+    return account.userId;
 }
 
 const findByEmail = (email: string): Promise<any> => {
